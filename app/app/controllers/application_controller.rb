@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  skip_before_action :verify_authenticity_token, :only => :create
+  protect_from_forgery with: :null_session
   before_action :set_locale
   helper_method :current_user
   helper_method :logged_in?
