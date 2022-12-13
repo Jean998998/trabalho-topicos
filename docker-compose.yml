@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  #web:
+  #  image: nginx
+  #  volumes:
+  #    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+  #    - ./nginx/private.key:/root/ssl/private.key
+  #    - ./nginx/certificate.crt:/root/ssl/certificate.crt
+  #  depends_on:
+  #    - app
+  #  ports:
+  #  - "443:443"
+  #  - 80:80
+  app:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b 0.0.0.0"
+    volumes:
+      - ./app:/app
+    environment:
+      RAILS_ENV: development
+      SENDGRID_USER: ${SENDGRID_USER}
+      SENDGRID_SECRET: ${SENDGRID_SECRET}
+      EMAIL_FROM: ${EMAIL_FROM}
+    depends_on:
+      - db
+    ports:
+      - "25:25"
+      - "465:465"
+      - "587:587"
+      - '3000:3000'
+  db:
+    image: postgres:14-bullseye
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+#    volumes:
+#      - ./pgdata:/var/lib/postgresql/data/pgdata
+#      - ./postgres-data:/var/lib/postgresql/data
+      # copy the sql script to create tables
+#      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
