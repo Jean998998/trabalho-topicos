@@ -1,21 +1,7 @@
 class ApplicationController < ActionController::Base
-  skip_before_action :verify_authenticity_token, :only => :create
-  protect_from_forgery with: :null_session
-  before_action :set_locale
-  helper_method :current_user
-  helper_method :logged_in?
+  protect_from_forgery with: :exception
 
-  helper_method :authenticate_adm?
-  def authenticate_adm?
-    current_user&.is_admin
-  end
-
-  def current_user
-    User.find_by(id: session[:user_id])
-  end
-  def logged_in?
-    !current_user.nil?
-  end
+  include SessionsHelper
 
   def set_locale
     if params[:locale]
@@ -26,6 +12,15 @@ class ApplicationController < ActionController::Base
       if I18n.locale != cookies[:locale]
         I18n.locale = cookies[:locale]
       end
+    end
+  end
+
+  private
+
+  def require_logged_in_user
+    unless user_signed_in?
+      flash[:danger] = 'Para acessar faça login!'
+      redirect_to entrar_path
     end
   end
 end

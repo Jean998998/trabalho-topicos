@@ -1,4 +1,4 @@
-<% if signed_in? %>
+<% if user_signed_in? %>
   <div class="jumbotron">
     <h1 class="display-4"><%= t('welcome') %></h1>
     <p class="lead"><%= t('messages.start') %></p>
@@ -12,6 +12,6 @@
     <h1 class="display-4"><%= t('welcome') %></h1>
     <p class="lead"><%= t('messages.login') %></p>
     <hr class="my-4">
-    <%= link_to "Sign In", new_user_session_path, class:"btn btn-primary btn-lg", role:"button" %>
+    <%= link_to "Sign In", sign_in_path, class:"btn btn-primary btn-lg", role:"button" %>
   </div>
 <% end %>

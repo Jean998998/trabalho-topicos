@@ -4,7 +4,11 @@ class MiningTypesController < ApplicationController
 
   # GET /mining_types or /mining_types.json
   def index
-    @mining_types = MiningType.all
+    if current_user.is_admin?
+      @mining_types = MiningType.all
+    else
+      @mining_types = current_user.mining_types
+    end
   end
 
   # GET /mining_types/1 or /mining_types/1.json
@@ -59,12 +63,16 @@ class MiningTypesController < ApplicationController
   end
 
   def authorized
-    redirect_to '/welcome' unless logged_in?
+    redirect_to '/welcome' unless user_signed_in?
   end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mining_type
-      @mining_type = MiningType.find(params[:id])
+      if current_user.is_admin?
+        @mining_type = MiningType.all.find(params[:id])
+      else
+        @mining_type = current_user.mining_types.find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.

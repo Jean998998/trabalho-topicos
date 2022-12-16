@@ -5,7 +5,11 @@ class CoinsController < ApplicationController
 
   # GET /coins or /coins.json
   def index
-    @coins = Coin.all
+    if current_user.is_admin?
+      @coins = Coin.all
+    else
+      @coins = current_user.coins
+    end
   end
 
   # GET /coins/1 or /coins/1.json
@@ -60,7 +64,7 @@ class CoinsController < ApplicationController
   end
 
   def authorized
-    redirect_to '/welcome' unless logged_in?
+    redirect_to '/welcome' unless user_signed_in?
   end
 
   private
@@ -70,7 +74,11 @@ class CoinsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_coin
-      @coin = Coin.find(params[:id])
+      if current_user.is_admin?
+        @coin = Coin.all.find(params[:id])
+      else
+        @coin = current_user.coins.find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.
