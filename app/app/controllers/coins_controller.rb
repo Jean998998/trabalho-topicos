@@ -27,7 +27,7 @@ class CoinsController < ApplicationController
 
   # POST /coins or /coins.json
   def create
-    @coin = Coin.new(coin_params)
+    @coin = current_user.coins.build(coin_params)
 
     respond_to do |format|
       if @coin.save
@@ -66,6 +66,7 @@ class CoinsController < ApplicationController
   def authorized
     redirect_to '/welcome' unless user_signed_in?
   end
+
 
   private
 

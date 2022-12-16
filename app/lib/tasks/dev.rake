@@ -50,8 +50,8 @@ namespace :dev do
 
   desc "Cria Usuários"
   task add_users: :environment do
-    jean = User.new(name: 'Jean', email: "jeanrmsodre@gmail.com", password: "Jean123", is_admin: true)
-    rafa = User.new(name: 'Rafael', email: "rafaelsouza@gmail.com", password: "Rafa123", is_admin: false)
+    jean = User.new(name: 'Jean', email: "jeanrmsodre@gmail.com", password: "Jean!123", is_admin: true)
+    rafa = User.new(name: 'Rafael', email: "rafaelsouza@gmail.com", password: "Rafa!123", is_admin: false)
     jean.save!
     rafa.save!
   end
