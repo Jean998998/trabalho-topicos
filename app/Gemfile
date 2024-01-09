@@ -12,7 +12,7 @@ gem 'rails-i18n'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0.4'
 # Use Puma as the app server
-gem 'puma'
+gem 'puma', '>= 6.4.2'
 # Use SCSS for stylesheets
 gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
